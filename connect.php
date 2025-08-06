@@ -1,29 +1,14 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, Access-Control-Allow-Origin");
-header("Access-Control-Allow-Methods: POST, OPTIONS , GET");
-
-include_once __DIR__ . "/functions.php";
-
-if (!function_exists('filterRequest')) {
-    function filterRequest($requestName)
-    {
-        return htmlspecialchars(strip_tags($_POST[$requestName]));
-    }
-}
-
-// connect.php ecommerce
-$host = "sql308.infinityfree.com";     // ← المضيف الصحيح
-$user = "if0_39641050";                // ← اسم المستخدم من CPanel
-$pass = "codeShoplay21";               // ← كلمة المرور الصحيحة
-$db   = "if0_39641050_ecommerce";      // ← اسم قاعدة البيانات
+$host = "mainline.proxy.rlwy.net";
+$port = 3306;
+$user = "root"; // أو حسب ما يظهر لك
+$password = "PrADZrqNqKkIiuzhlKGCRaEKiMGTsKnz";
+$dbname = "railway";
 
 try {
-    $connect = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
-    $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $conn = new PDO("mysql:host=$host;port=$port;dbname=$dbname", $user, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    echo "✅ Connected successfully to Railway MySQL";
 } catch (PDOException $e) {
-    die(json_encode([
-        "status" => "failed",
-        "message" => "Connection failed: " . $e->getMessage()
-    ]));
+    echo "❌ Connection failed: " . $e->getMessage();
 }
