@@ -3,7 +3,6 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, Access-Control-Allow-Origin");
 header("Access-Control-Allow-Methods: POST, OPTIONS , GET");
 
-}
 $host = "mainline.proxy.rlwy.net";
 $port = 55258;
 $user = "root"; // أو اسم المستخدم الذي يظهر لك في Railway
