@@ -1,0 +1,6 @@
+﻿{
+  "build": {
+    "dockerfilePath": "Dockerfile"
+  }
+}
+

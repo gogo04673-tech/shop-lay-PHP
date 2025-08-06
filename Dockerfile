@@ -1,4 +1,10 @@
-FROM php:7.4-apache
+﻿FROM php:8.2-apache
+
+# تثبيت MySQL PDO
+RUN docker-php-ext-install pdo pdo_mysql
+
+# نسخ ملفات المشروع إلى داخل السيرفر
 COPY . /var/www/html/
-EXPOSE 80
-CMD ["apache2-foreground"]
+
+# إعطاء الصلاحيات
+RUN chown -R www-data:www-data /var/www/html

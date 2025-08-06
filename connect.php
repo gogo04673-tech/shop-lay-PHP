@@ -1,14 +1,14 @@
 <?php
 $host = "mainline.proxy.rlwy.net";
-$port = 3306;
-$user = "root"; // أو حسب ما يظهر لك
-$password = "PrADZrqNqKkIiuzhlKGCRaEKiMGTsKnz";
-$dbname = "railway";
+$port = 55258;
+$user = "root"; // أو اسم المستخدم الذي يظهر لك في Railway
+$password = "PrADZrqNqKkIiuzhlKGCRaEKiMGTsKnz"; // كلمة السر من Railway
+$dbname = "railway"; // اسم قاعدة البيانات
 
 try {
-    $conn = new PDO("mysql:host=$host;port=$port;dbname=$dbname", $user, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "✅ Connected successfully to Railway MySQL";
+    $connect = new PDO("mysql:host=$host;port=$port;dbname=$dbname", $user, $password);
+    $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    echo "✅ Connected successfully to Railway DB!";
 } catch (PDOException $e) {
     echo "❌ Connection failed: " . $e->getMessage();
 }
