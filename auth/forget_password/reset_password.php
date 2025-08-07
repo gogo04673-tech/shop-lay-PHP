@@ -12,10 +12,8 @@ include "../../connect.php";
 $input = file_get_contents('php://input');
 $data = json_decode($input, true) ?: $_POST;
 
-
 $email = isset($data['email']) ? $data['email'] : '';
 $password = isset($data['password']) ? $data['password'] : '';
-
 
 // التحقق من القيم المطلوبة
 if (empty($email) || empty($password)) {
@@ -30,36 +28,27 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 
 try {
-    // التحقق من وجود البريد الإلكتروني أو رقم الهاتف مسبقًا
+    // التحقق من وجود المستخدم بالبريد الإلكتروني
     $stmt = $connect->prepare('SELECT * FROM `users` WHERE `users_email` = ?');
     $stmt->execute([$email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($user) {
-        // تشفير كلمة المرور
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        // تشفير كلمة المرور الجديدة
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    // إدخال المستخدم الجديد
-    $stmt = $connect->prepare("INSERT INTO `users`(`users_password`) VALUES (?)");
-    $stmt->execute([$hashed_password]);
+        // تنفيذ التحديث
+        $stmt = $connect->prepare("UPDATE `users` SET `users_password` = ? WHERE `users_email` = ?");
+        $stmt->execute([$hashed_password, $email]);
 
-    // التحقق من نجاح الإدخال
-    $count = $stmt->rowCount();
-    if ($count > 0) {
         echo json_encode([
             "status" => "success",
-            "message" => "Account created successfully",
-            "data" => $userData
+            "message" => "Password updated successfully"
         ]);
     } else {
-        echo json_encode(["status" => "failed", "message" => "Error creating account"]);
+        echo json_encode(["status" => "failed", "message" => "Email not found"]);
     }
-        
-    }else { 
-        echo json_encode(["status" => "failed", "message" => "Email is not found"]);
-        exit();}
 
-    
 } catch (PDOException $e) {
     echo json_encode(["status" => "error", "message" => $e->getMessage()]);
 }
