@@ -29,7 +29,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
 try {
     // البحث عن المستخدم بالبريد فقط
-    $stmt = $connect->prepare('SELECT * FROM `users` WHERE `users_email` = ?');
+    $stmt = $connect->prepare('SELECT * FROM `users` WHERE `users_email` = ? AND `users_approve` = 1');
     $stmt->execute([$email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
