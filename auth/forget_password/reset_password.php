@@ -18,7 +18,7 @@ $password = isset($data['password']) ? $data['password'] : '';
 
 
 // التحقق من القيم المطلوبة
-if (empty($email) || empty($password) || empty($username) || empty($phone)) {
+if (empty($email) || empty($password)) {
     echo json_encode(["status" => "failed", "message" => "All fields are required"]);
     exit();
 }
@@ -36,11 +36,7 @@ try {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($user) {
-        echo json_encode(["status" => "failed", "message" => "Email or phone already exists"]);
-        exit();
-    }
-
-    // تشفير كلمة المرور
+        // تشفير كلمة المرور
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
     // إدخال المستخدم الجديد
@@ -58,6 +54,12 @@ try {
     } else {
         echo json_encode(["status" => "failed", "message" => "Error creating account"]);
     }
+        
+    }else { 
+        echo json_encode(["status" => "failed", "message" => "Email is not found"]);
+        exit();}
+
+    
 } catch (PDOException $e) {
     echo json_encode(["status" => "error", "message" => $e->getMessage()]);
 }
