@@ -45,7 +45,7 @@ try {
     $stmt = $connect->prepare("INSERT INTO `users`(`users_name`, `users_email`, `users_phone`, `users_verifycode`, `users_password`) VALUES (?, ?, ?, ?, ?)");
 
     $stmt->execute([$username, $email, $phone, $verify_code, $hashed_password]);
-    $users = $stmt->fetch(PDO::FETCH_ASSOC);
+    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     $count = $stmt->rowCount();
     if ($count > 0) {
