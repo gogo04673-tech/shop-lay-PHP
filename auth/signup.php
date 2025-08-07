@@ -41,19 +41,30 @@ try {
 
     // تسجيل المستخدم الجديد
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
     $stmt = $connect->prepare("INSERT INTO `users`(`users_name`, `users_email`, `users_phone`, `users_verifycode`, `users_password`) VALUES (?, ?, ?, ?, ?)");
+$stmt->execute([$username, $email, $phone, $verify_code, $hashed_password]);
 
-    $stmt->execute([$username, $email, $phone, $verify_code, $hashed_password]);
-    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$count = $stmt->rowCount();
+if ($count > 0) {
+    // جلب بيانات المستخدم بعد الإدخال مباشرة
+    $userId = $connect->lastInsertId(); // جلب آخر ID تم إدخاله
 
-    $count = $stmt->rowCount();
-    if ($count > 0) {
-        //send_verification_code($email, "eljihadmohammed84@gmail.com", $verify_code);
-        echo json_encode(["status" => "success", "message" => "Account created successfully", "data"=> $users]);
-    } else {
-        echo json_encode(["status" => "failed", "message" => "Error creating account"]);
-    }
-} catch (PDOException $e) {
+    $stmtUser = $connect->prepare("SELECT `users_id`, `users_name`, `users_email`, `users_phone` FROM `users` WHERE `users_id` = ?");
+    $stmtUser->execute([$userId]);
+    $userData = $stmtUser->fetch(PDO::FETCH_ASSOC);
+
+    echo json_encode([
+        "status" => "success",
+        "message" => "Account created successfully",
+        "data" => $userData
+    ]);
+} else {
+    echo json_encode([
+        "status" => "failed",
+        "message" => "Error creating account"
+    ]);
+}
+
+    
     echo json_encode(["status" => "failed", "message" => "Database error: " . $e->getMessage()]);
 }
