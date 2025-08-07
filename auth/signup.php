@@ -45,11 +45,12 @@ try {
     $stmt = $connect->prepare("INSERT INTO `users`(`users_name`, `users_email`, `users_phone`, `users_verifycode`, `users_password`) VALUES (?, ?, ?, ?, ?)");
 
     $stmt->execute([$username, $email, $phone, $verify_code, $hashed_password]);
+    $users = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $count = $stmt->rowCount();
     if ($count > 0) {
         //send_verification_code($email, "eljihadmohammed84@gmail.com", $verify_code);
-        echo json_encode(["status" => "success", "message" => "Account created successfully", "data"=> $user]);
+        echo json_encode(["status" => "success", "message" => "Account created successfully", "data"=> $users]);
     } else {
         echo json_encode(["status" => "failed", "message" => "Error creating account"]);
     }
