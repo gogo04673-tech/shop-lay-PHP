@@ -49,9 +49,9 @@ try {
     $count = $stmt->rowCount();
     if ($count > 0) {
         //send_verification_code($email, "eljihadmohammed84@gmail.com", $verify_code);
-        echo json_encode(["status" => "success", "message" => "Account created successfully"]);
+        echo json_encode(["status" => "success", "message" => "Account created successfully", "data"=> $user]);
     } else {
-        echo json_encode(["status" => "failed", "message" => "Error creating account"]);
+        echo json_encode(["status" => "failed", "message" => "Error creating account", "data"=> []);
     }
 } catch (PDOException $e) {
     echo json_encode(["status" => "failed", "message" => "Database error: " . $e->getMessage()]);
