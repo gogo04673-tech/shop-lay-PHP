@@ -52,9 +52,9 @@ if (!function_exists('filterRequest')) {
 	}
 }
 
-function filterRequest($requestname)
+function filterRequest($requestName)
 {
-	return htmlspecialchars(strip_tags($_POST[$requestname]));
+	return htmlspecialchars(strip_tags($_POST[$requestName]));
 }
 
 
@@ -184,4 +184,45 @@ function secureFileUpload($requestFile)
 	return $errors;
 }
 
-// * send message to email
+// * get data Function 
+function getData($table, $json = true)
+{
+	include "./connect.php";
+
+	try {
+		// جلب كل المستخدمين من جدول users
+		$stmt = $connect->prepare('SELECT * FROM ?');
+		$stmt->execute([$table]);
+		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+		if ($json == true) {
+			if (count($data) > 0) {
+				echo json_encode([
+					"status" => "success",
+					"message" => "Data retrieved successfully",
+					"data" => $data
+				]);
+			} else {
+				echo json_encode([
+					"status" => "failed",
+					"message" => "No users found"
+				]);
+			}
+		} else {
+			if (count($users) > 0) {
+				return $data;
+			} else {
+				echo json_encode([
+					"status" => "failed",
+					"message" => "No users found"
+				]);
+			}
+		}
+	} catch (PDOException $e) {
+		echo json_encode([
+			"status" => "failed",
+			"message" => "Database error: " . $e->getMessage()
+		]);
+	}
+}
