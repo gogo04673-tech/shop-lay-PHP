@@ -190,7 +190,7 @@ function getData($table, $where = null, $json = true)
 	include __DIR__ . "/connect.php";
 
 	try {
-		$allowedTables = ['categories', 'users', 'products'];
+		$allowedTables = ['categories', 'users', 'items', 'items_view'];
 		if (!in_array($table, $allowedTables)) {
 			throw new Exception("Invalid table name");
 		}
