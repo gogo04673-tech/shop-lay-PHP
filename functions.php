@@ -185,9 +185,9 @@ function secureFileUpload($requestFile)
 }
 
 // * get data Function 
-function getData($table, $where, $json = true)
+function getData($table, $where = null, $json = true)
 {
-	include "./connect.php";
+	include __DIR__ . "/connect.php";
 
 	try {
 		$allowedTables = ['categories', 'users', 'products'];
@@ -195,17 +195,14 @@ function getData($table, $where, $json = true)
 			throw new Exception("Invalid table name");
 		}
 
-
-		if ($where != null) {
-			$stmt = $connect->prepare("SELECT * FROM `$table` WHERE $where");
-			$stmt->execute();
-			$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		} else {
-			$stmt = $connect->prepare("SELECT * FROM `$table`");
-			$stmt->execute();
-			$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$sql = "SELECT * FROM `$table`";
+		if (!empty($where)) {
+			$sql .= " WHERE $where";
 		}
 
+		$stmt = $connect->prepare($sql);
+		$stmt->execute();
+		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 		if ($json) {
 			echo json_encode([
@@ -214,7 +211,7 @@ function getData($table, $where, $json = true)
 				"data" => $data
 			]);
 		} else {
-			return count($data) > 0 ? $data : [];
+			return $data;
 		}
 	} catch (PDOException $e) {
 		echo json_encode([
