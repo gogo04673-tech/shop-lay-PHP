@@ -1,12 +1,10 @@
 <?php
 include "./functions.php";
-$allData = array();
 
+$allData = [];
 $categories = getData("categories", false);
 
-
 $allData['success'] = "success";
-
 $allData['categories'] = $categories;
 
-echo $allData;
+echo json_encode($allData);

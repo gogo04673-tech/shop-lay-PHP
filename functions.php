@@ -190,39 +190,33 @@ function getData($table, $json = true)
 	include "./connect.php";
 
 	try {
-		// جلب كل المستخدمين من جدول users
-		$stmt = $connect->prepare('SELECT * FROM ?');
-		$stmt->execute([$table]);
+		$allowedTables = ['categories', 'users', 'products'];
+		if (!in_array($table, $allowedTables)) {
+			throw new Exception("Invalid table name");
+		}
+
+		$stmt = $connect->prepare("SELECT * FROM `$table`");
+		$stmt->execute();
 		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-
-		if ($json == true) {
-			if (count($data) > 0) {
-				echo json_encode([
-					"status" => "success",
-					"message" => "Data retrieved successfully",
-					"data" => $data
-				]);
-			} else {
-				echo json_encode([
-					"status" => "failed",
-					"message" => "No users found"
-				]);
-			}
+		if ($json) {
+			echo json_encode([
+				"status" => count($data) > 0 ? "success" : "failed",
+				"message" => count($data) > 0 ? "Data retrieved successfully" : "No data found",
+				"data" => $data
+			]);
 		} else {
-			if (count($data) > 0) {
-				return $data;
-			} else {
-				echo json_encode([
-					"status" => "failed",
-					"message" => "No users found"
-				]);
-			}
+			return count($data) > 0 ? $data : [];
 		}
 	} catch (PDOException $e) {
 		echo json_encode([
 			"status" => "failed",
 			"message" => "Database error: " . $e->getMessage()
+		]);
+	} catch (Exception $e) {
+		echo json_encode([
+			"status" => "failed",
+			"message" => $e->getMessage()
 		]);
 	}
 }
