@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 header('Access-Control-Allow-Origin: *');
 header("Content-Type: application/json; charset=UTF-8");
 
-include "./connect.php";
+include "../connect.php";
 
 try {
     // جلب كل المستخدمين من جدول users
