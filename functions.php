@@ -210,7 +210,7 @@ function getData($table, $json = true)
 				]);
 			}
 		} else {
-			if (count($users) > 0) {
+			if (count($data) > 0) {
 				return $data;
 			} else {
 				echo json_encode([
