@@ -25,7 +25,7 @@ if (empty($categoryId)) {
 $allData = [];
 
 
-$items = getData("items", "categories_id = $categoryId", false);
+$items = getData("items_view", "categories_id = $categoryId", false);
 
 
 $allData['status'] = "success";
