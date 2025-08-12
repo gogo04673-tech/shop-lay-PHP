@@ -24,4 +24,4 @@ $userId = isset($data['userId']) ? intval($data['userId']) : 0;
 // }
 
 
-getData("favorite_items", "favorite_user_id = $userId", false);
+getData("favorite_items", "favorite_user_id = $userId");
