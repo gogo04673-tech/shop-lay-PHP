@@ -15,13 +15,13 @@ $data = json_decode($input, true) ?: $_POST;
 $userId = isset($data['userId']) ? intval($data['userId']) : 0;
 
 
-if (empty($userId)) {
-    echo json_encode([
-        "status" => "failure",
-        "message" => "userId is required"
-    ]);
-    exit();
-}
+// if (empty($userId)) {
+//     echo json_encode([
+//         "status" => "failure",
+//         "message" => "userId is required"
+//     ]);
+//     exit();
+// }
 
 
 getData("favorite_items", "favorite_user_id = $userId", false);
