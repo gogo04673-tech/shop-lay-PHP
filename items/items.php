@@ -61,6 +61,5 @@ if ($result) {
     echo json_encode([
         "status" => "failure",
         "message" => "No items found",
-        "data" => []
     ]);
 }
