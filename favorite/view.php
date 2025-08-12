@@ -23,4 +23,9 @@ if (empty($userId)) {
     exit();
 }
 
-getData("favorite_items", "`favorite_user_id` = $userId");
+$allData = [];
+
+$favorite = getData("favorite_items", "favorite_user_id = $userId", false);
+
+
+$allData['favorite'] = $favorite;
