@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 header('Access-Control-Allow-Origin: *');
 header("Content-Type: application/json; charset=UTF-8");
 
-include "../../connect.php";
+include "../connect.php";
 
 // استقبال البيانات سواء من POST أو JSON
 $input = file_get_contents('php://input');
