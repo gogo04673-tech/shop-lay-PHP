@@ -29,7 +29,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
 try {
     // البحث عن المستخدم بالبريد فقط
-    $stmt = $connect->prepare('SELECT * FROM `users` WHERE `users_email` = ? AND `users_approve` = 1');
+    $stmt = $connect->prepare('SELECT * FROM `users` WHERE `users_email` = ?');
     $stmt->execute([$email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -44,7 +44,6 @@ try {
         // البريد موجود لكن كلمة المرور خاطئة أو المستخدم غير موجود
         echo json_encode(["status" => "failed", "message" => "Invalid email or password"]);
     }
-
 } catch (PDOException $e) {
     echo json_encode(["status" => "error", "message" => $e->getMessage()]);
 }
