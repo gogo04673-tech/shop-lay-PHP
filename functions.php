@@ -260,7 +260,7 @@ function getData($table, $where = null, $json = true)
 				"data"    => $data
 			]);
 		} else {
-			return $data;
+			return $stmt->rowCount();
 		}
 	} catch (PDOException $e) {
 		echo json_encode([
