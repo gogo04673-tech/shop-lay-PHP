@@ -34,13 +34,13 @@ if ($itemExists == 0) {
 
 // تحقق أن المنتج غير مكرر في السلة
 $count = getData("cart", "cart_items_id = $itemId AND cart_users_id = $userId", false);
-if ($count > 0) {
-    echo json_encode([
-        "status" => "failure",
-        "message" => "Item already in cart"
-    ]);
-    exit;
-}
+// if ($count > 0) {
+//     echo json_encode([
+//         "status" => "failure",
+//         "message" => "Item already in cart"
+//     ]);
+//     exit;
+// }
 
 // إضافة المنتج للسلة
 $data = array(
