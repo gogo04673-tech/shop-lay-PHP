@@ -23,7 +23,7 @@ if (empty($userId)) {
     exit;
 }
 
-$data = getAllData("items_cart", "null", false);
+$data = getAllData("items_cart", null, false);
 
 $sql = "
 SELECT 
