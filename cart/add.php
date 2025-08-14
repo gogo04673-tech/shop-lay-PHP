@@ -21,7 +21,7 @@ if (empty($userId) || empty($itemId)) {
     ]);
 }
 
-$count = getData("cart", "`cart_items_id` = $itemId AND `cart_users_id` = $userId", false);
+$count = getData("cart", "cart_items_id = $itemId AND cart_users_id = $userId", false);
 
 $data = array(
     "cart_users_id" => $userId,
