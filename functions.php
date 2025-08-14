@@ -184,13 +184,13 @@ function secureFileUpload($requestFile)
 	return $errors;
 }
 
-// * get data Function 
-function getData($table, $where = null, $json = true)
+// * get all  data Function 
+function getAllData($table, $where = null, $json = true)
 {
 	include __DIR__ . "/connect.php";
 
 	try {
-		$allowedTables = ['categories', 'users', 'items', 'items_view', 'favorite_items'];
+		$allowedTables = ['categories', 'users', 'items', 'items_view', 'favorite_items', 'cart'];
 		if (!in_array($table, $allowedTables)) {
 			throw new Exception("Invalid table name");
 		}
@@ -223,5 +223,90 @@ function getData($table, $where = null, $json = true)
 			"status" => "failed",
 			"message" => $e->getMessage()
 		]);
+	}
+}
+
+// * get data Function 
+function getData($table, $where = null, $json = true)
+{
+	include __DIR__ . "/connect.php";
+
+	try {
+		$allowedTables = ['categories', 'users', 'items', 'items_view', 'favorite_items', 'cart'];
+		if (!in_array($table, $allowedTables)) {
+			throw new Exception("Invalid table name");
+		}
+
+		$sql = "SELECT * FROM `$table`";
+		if (!empty($where)) {
+			$sql .= " WHERE $where";
+		}
+
+		$stmt = $connect->prepare($sql);
+		$stmt->execute();
+		$data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+		if ($json) {
+			echo json_encode([
+				"status" => count($data) > 0 ? "success" : "failed",
+				"message" => count($data) > 0 ? "Data retrieved successfully" : "No data found",
+				"data" => $data
+			]);
+		} else {
+			return $stmt->rowCount();
+		}
+	} catch (PDOException $e) {
+		echo json_encode([
+			"status" => "failed",
+			"message" => "Database error: " . $e->getMessage()
+		]);
+	} catch (Exception $e) {
+		echo json_encode([
+			"status" => "failed",
+			"message" => $e->getMessage()
+		]);
+	}
+}
+
+// * insert data function
+function insertData($table, $data, $json = true)
+{
+	include __DIR__ . "/connect.php";
+
+	// تحقق من اسم الجدول
+	$allowedTables = ['categories', 'users', 'items', 'items_view', 'favorite_items', 'cart'];
+	if (!in_array($table, $allowedTables)) {
+		throw new Exception("Invalid table name");
+	}
+
+	// بناء الاستعلام
+	$ins = [];
+	foreach ($data as $field => $value) {
+		$ins[] = ":" . $field;
+	}
+	$ins = implode(',', $ins);
+	$fields = implode(',', array_keys($data));
+
+	$sql = "INSERT INTO $table ($fields) VALUES ($ins)";
+
+	try {
+		$stmt = $connect->prepare($sql);
+		foreach ($data as $f => $v) {
+			$stmt->bindValue(':' . $f, $v);
+		}
+		$stmt->execute();
+		$count = $stmt->rowCount();
+
+		if ($json) {
+			echo json_encode(["status" => $count > 0 ? "success" : "failure"]);
+		} else {
+			return $count;
+		}
+	} catch (PDOException $e) {
+		if ($json) {
+			echo json_encode(["status" => "error", "message" => $e->getMessage()]);
+		} else {
+			throw $e;
+		}
 	}
 }
