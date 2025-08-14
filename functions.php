@@ -251,7 +251,7 @@ function getData($table, $where = null, $json = true)
 
 		$stmt = $connect->prepare($sql);
 		$stmt->execute($params);
-		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$data = $stmt->fetch(PDO::FETCH_ASSOC);
 
 		if ($json) {
 			echo json_encode([
