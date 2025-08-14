@@ -14,7 +14,6 @@ $data = json_decode($input, true) ?: $_POST;
 $userId = isset($data['userId']) ? intval($data['userId']) : 0;
 $itemId = isset($data['itemId']) ? intval($data['itemId']) : 0;
 
-
 if (empty($userId) || empty($itemId)) {
     echo json_encode([
         "status" => "failure",
@@ -23,19 +22,24 @@ if (empty($userId) || empty($itemId)) {
     exit();
 }
 
-$stmt = $connect->prepare("DELETE FROM `cart` 
-WHERE `cart_id` = 
-(SELECT cart_id FROM `cart` WHERE  `cart_users_id` = ? AND `cart_items_id` = ? LIMIT 1)");
+$sql = "
+DELETE c
+FROM cart c
+JOIN (
+    SELECT cart_id FROM cart WHERE cart_users_id = ? AND cart_items_id = ? LIMIT 1
+) AS sub ON c.cart_id = sub.cart_id
+";
+$stmt = $connect->prepare($sql);
 $stmt->execute([$userId, $itemId]);
 
 if ($stmt->rowCount() > 0) {
     echo json_encode([
         "status" => "success",
-        "message" => "Delete a favorite item"
+        "message" => "Item removed from cart"
     ]);
 } else {
     echo json_encode([
         "status" => "failure",
-        "message" => "Is not Delete a favorite item"
+        "message" => "Item not found in cart"
     ]);
 }
