@@ -25,7 +25,7 @@ if (empty($userId) || empty($itemId)) {
 
 $stmt = $connect->prepare("DELETE FROM `cart` 
 WHERE `cart_id` = 
-(SELECT * FROM `cart` WHERE  `cart_users_id` = ? AND `cart_items_id` = ? LIMIT 1)");
+(SELECT cart_id FROM `cart` WHERE  `cart_users_id` = ? AND `cart_items_id` = ? LIMIT 1)");
 $stmt->execute([$userId, $itemId]);
 
 if ($stmt->rowCount() > 0) {
