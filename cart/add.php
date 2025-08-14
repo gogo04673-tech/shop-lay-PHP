@@ -19,10 +19,30 @@ if (empty($userId) || empty($itemId)) {
         "status" => "failure",
         "message" => "userId and itemId are required"
     ]);
+    exit;
 }
 
-$count = getData("cart", "cart_items_id = $itemId AND cart_users_id = $userId", false);
+// تحقق أن المنتج موجود
+$itemExists = getData("items", "items_id = $itemId", false);
+if ($itemExists == 0) {
+    echo json_encode([
+        "status" => "failure",
+        "message" => "Item does not exist"
+    ]);
+    exit;
+}
 
+// تحقق أن المنتج غير مكرر في السلة
+$count = getData("cart", "cart_items_id = $itemId AND cart_users_id = $userId", false);
+if ($count > 0) {
+    echo json_encode([
+        "status" => "failure",
+        "message" => "Item already in cart"
+    ]);
+    exit;
+}
+
+// إضافة المنتج للسلة
 $data = array(
     "cart_users_id" => $userId,
     "cart_items_id" => $itemId
