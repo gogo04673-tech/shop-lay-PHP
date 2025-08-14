@@ -238,35 +238,43 @@ function getData($table, $where = null, $json = true)
 		}
 
 		$sql = "SELECT * FROM `$table`";
-		if (!empty($where)) {
-			$sql .= " WHERE $where";
+		$params = [];
+
+		if (!empty($where) && is_array($where)) {
+			$conditions = [];
+			foreach ($where as $field => $value) {
+				$conditions[] = "$field = :$field";
+				$params[":$field"] = $value;
+			}
+			$sql .= " WHERE " . implode(" AND ", $conditions);
 		}
 
 		$stmt = $connect->prepare($sql);
-		$stmt->execute();
-		$data = $stmt->fetch(PDO::FETCH_ASSOC);
+		$stmt->execute($params);
+		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 		if ($json) {
 			echo json_encode([
-				"status" => count($data) > 0 ? "success" : "failed",
-				"message" => count($data) > 0 ? "Data retrieved successfully" : "No data found",
-				"data" => $data
+				"status"  => !empty($data) ? "success" : "failed",
+				"message" => !empty($data) ? "Data retrieved successfully" : "No data found",
+				"data"    => $data
 			]);
 		} else {
-			return $stmt->rowCount();
+			return $data;
 		}
 	} catch (PDOException $e) {
 		echo json_encode([
-			"status" => "failed",
+			"status"  => "failed",
 			"message" => "Database error: " . $e->getMessage()
 		]);
 	} catch (Exception $e) {
 		echo json_encode([
-			"status" => "failed",
+			"status"  => "failed",
 			"message" => $e->getMessage()
 		]);
 	}
 }
+
 
 // * insert data function
 function insertData($table, $data, $json = true)
