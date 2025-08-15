@@ -14,12 +14,12 @@ $dataInput = json_decode($input, true) ?: $_POST;
 
 $search = isset($dataInput['search']) ? intval($dataInput['search']) : 0;
 
-if (empty($search)) {
-    echo json_encode([
-        "status" => "failure",
-        "message" => "search is required"
-    ]);
-    exit;
-}
+// if (empty($search)) {
+//     echo json_encode([
+//         "status" => "failure",
+//         "message" => "search is required"
+//     ]);
+//     exit;
+// }
 
 getAllData('items', "items_name LIKE `%$search%` OR items_name_ar LIKE `%$search%`");
