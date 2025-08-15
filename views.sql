@@ -1,6 +1,6 @@
 
 // View items_view
-CREATE OR REPLACE VIEW items_viewAS
+CREATE OR REPLACE VIEW items_view AS
 SELECT items.*, categories.* FROM items
 INNER JOIN categories ON items.items_categories = categories.categories_id
 

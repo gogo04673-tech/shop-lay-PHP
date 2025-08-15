@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 header('Access-Control-Allow-Origin: *');
 header("Content-Type: application/json; charset=UTF-8");
 
-include "../functions.php";
+// include "../functions.php";
 include "../connect.php";
 
 $input = file_get_contents('php://input');
@@ -28,7 +28,7 @@ $where = "items_name LIKE :search OR items_name_ar LIKE :search";
 
 
 try {
-    $sql = "SELECT * FROM items WHERE $where";
+    $sql = "SELECT * FROM items_view WHERE $where";
     $stmt = $connect->prepare($sql);
     $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
     $stmt->execute();
