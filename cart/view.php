@@ -29,6 +29,7 @@ $sql = "
 SELECT 
 SUM(items_cart.total) as total_price_items, 
 COUNT(items_cart.count_item) as total_count_items 
+(items_price - (items_price * items_discount / 100)) as items_price_discount
 FROM `items_cart` 
 WHERE items_cart.cart_users_id = ? 
 GROUP BY cart_users_id
