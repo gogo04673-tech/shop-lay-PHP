@@ -6,8 +6,8 @@ error_reporting(E_ALL);
 header('Access-Control-Allow-Origin: *');
 header("Content-Type: application/json; charset=UTF-8");
 
+include "../connect.php"; // لازم هذا الملف ينشئ اتصال $conn
 include "../functions.php";
-include "../connect.php"; // لو محتاج الاتصال بقاعدة البيانات
 
 $input = file_get_contents('php://input');
 $dataInput = json_decode($input, true) ?: $_POST;
