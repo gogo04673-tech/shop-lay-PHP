@@ -13,7 +13,7 @@ INNER JOIN items ON items.items_id = favorite.favorite_item_id
 // View items cart 
 CREATE OR REPLACE VIEW items_cart AS
 SELECT 
-    SUM(items.items_price) AS total,
+    SUM(items.items_price - (items.items_price * items.items_discount / 100)) AS total,
     COUNT(cart.cart_items_id) AS count_item,
     MAX(cart.cart_id) AS cart_id,
     cart.cart_users_id,
