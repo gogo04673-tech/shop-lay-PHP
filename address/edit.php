@@ -14,6 +14,7 @@ $data = json_decode($input, true) ?: $_POST;
 $addressId = isset($data['addressId']) ? intval($data['addressId']) : 0;
 $city = isset($data['city']) ? trim($data['city']) : '';
 $street = isset($data['street']) ? trim($data['street']) : '';
+$addressName = isset($data['addressName']) ? trim($data['addressName']) : '';
 $lat = isset($data['lat']) ? floatval($data['lat']) : 0;
 $lang = isset($data['lang']) ? floatval($data['lang']) : 0;
 
@@ -31,8 +32,8 @@ try {
     $address = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($address) {
-        $st = $connect->prepare("UPDATE `address` SET `address_city` = ?, `address_street` = ?, `address_lat` = ?, `address_lang` = ? WHERE `address_id` = ?");
-        $st->execute([$city, $street, $lat, $lang, $addressId]);
+        $st = $connect->prepare("UPDATE `address` SET `address_city` = ?, `address_street` = ?, `address_lat` = ?, `address_lang` = ?, `address_name` = ? WHERE `address_id` = ?");
+        $st->execute([$city, $street, $lat, $lang, $addressName, $addressId]);
 
         echo json_encode([
             "status" => "success",

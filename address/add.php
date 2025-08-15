@@ -14,6 +14,7 @@ $data = json_decode($input, true) ?: $_POST;
 $userId = isset($data['userId']) ? intval($data['userId']) : 0;
 $city = isset($data['city']) ? trim($data['city']) : '';
 $street = isset($data['street']) ? trim($data['street']) : '';
+$addressName = isset($data['addressName']) ? trim($data['addressName']) : '';
 $lat = isset($data['lat']) ? floatval($data['lat']) : 0;
 $lang = isset($data['lang']) ? floatval($data['lang']) : 0;
 
@@ -31,6 +32,7 @@ $data = array(
     "address_street" => $street,
     "address_lat" => $lat,
     "address_lang" => $lang,
+    "address_name" => $addressName
 );
 
 insertData("address", $data);
