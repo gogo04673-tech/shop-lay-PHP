@@ -23,7 +23,8 @@ if (empty($categoryId) || empty($userId)) {
 }
 
 $sql = "
-    SELECT items_view.*, 1 as favorite 
+    SELECT items_view.*, 1 as favorite, 
+    (items_price - (items_price * items_discount / 100)) as items_price_discount
     FROM items_view 
     INNER JOIN favorite 
         ON favorite.favorite_item_id = items_view.items_id 
@@ -32,7 +33,8 @@ $sql = "
 
     UNION ALL
 
-    SELECT items_view.*, 0 as favorite 
+    SELECT items_view.*, 0 as favorite,
+    (items_price - (items_price * items_discount / 100)) as items_price_discount 
     FROM items_view
     WHERE categories_id = :categoryId 
       AND items_id NOT IN ( 
