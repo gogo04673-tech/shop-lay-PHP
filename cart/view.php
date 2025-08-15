@@ -14,39 +14,12 @@ $data = json_decode($input, true) ?: $_POST;
 
 $userId = isset($data['userId']) ? intval($data['userId']) : 0;
 
-
-if (empty($userId)) {
+if ($userId <= 0) {
     echo json_encode([
         "status" => "failure",
-        "message" => "userId are required"
+        "message" => "userId is required and must be greater than 0"
     ]);
     exit;
 }
 
-$data = getAllData("items_cart", null, false);
-
-$sql = "
-SELECT 
-SUM(items_cart.total) as total_price_items, 
-COUNT(items_cart.count_item) as total_count_items
-FROM `items_cart` 
-WHERE items_cart.cart_users_id = ? 
-GROUP BY cart_users_id
-";
-$stmt = $connect->prepare($sql);
-$stmt->execute([$userId]);
-$dataCountAndPrice = $stmt->fetch(PDO::FETCH_ASSOC);
-
-if ($stmt->rowCount() > 0) {
-    echo json_encode([
-        "status" => "success",
-        "message" => "Items cart and data count and price are found.",
-        "data" => $data,
-        "countPrice" => $dataCountAndPrice
-    ]);
-} else {
-    echo json_encode([
-        "status" => "failure",
-        "message" => "Items cart and data count and price aren't found."
-    ]);
-}
+getAllData("address", "address_users_id = $userId");
