@@ -189,6 +189,8 @@ function getAllData($table, $where = null, $json = true)
 {
 	include __DIR__ . "/connect.php";
 
+	//global $connect;
+
 	try {
 		$allowedTables = ['categories', 'users', 'items', 'items_view', 'favorite_items', 'cart', 'items_cart'];
 		if (!in_array($table, $allowedTables)) {
