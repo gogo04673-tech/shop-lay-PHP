@@ -1,4 +1,3 @@
-
 <?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -37,6 +36,7 @@ $stmt = $connect->prepare($sql);
 $stmt->execute([$userId]);
 
 $dataCountAndPrice = $stmt->fetch(PDO::FETCH_ASSOC);
+
 if ($stmt->rowCount() > 0) {
     echo json_encode([
         "status" => "success",
