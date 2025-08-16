@@ -22,4 +22,4 @@ if ($userId <= 0) {
     exit;
 }
 
-getAllData("address", "address_users_id = $userId");
+getAllData("cart", "cart_users_id = $userId");
