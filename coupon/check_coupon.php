@@ -11,10 +11,8 @@ include "../functions.php";
 $input = file_get_contents('php://input');
 $data = json_decode($input, true) ?: $_POST;
 
-
 $couponName = isset($data['couponName']) ? trim($data['couponName']) : '';
 $now = date("Y-m-d H:i:s");
-
 
 if ($couponName === '') {
     echo json_encode([
@@ -24,4 +22,8 @@ if ($couponName === '') {
     exit;
 }
 
-getData("coupon", "coupon_name = $couponName AND coupon_expire_date > $now AND coupon_count > 0 ");
+// حط القيم بين '' لحمايتها
+$where = "coupon_name = '$couponName' AND coupon_expire_date > '$now' AND coupon_count > 0";
+
+// استدعاء الدالة
+getData("coupon", $where);
