@@ -234,7 +234,7 @@ function getData($table, $where = null, $json = true)
 	include __DIR__ . "/connect.php";
 
 	try {
-		$allowedTables = ['categories', 'users', 'items', 'items_view', 'favorite_items', 'cart', 'items_cart', 'address'];
+		$allowedTables = ['categories', 'users', 'items', 'items_view', 'favorite_items', 'cart', 'items_cart', 'address', 'coupon'];
 		if (!in_array($table, $allowedTables)) {
 			throw new Exception("Invalid table name");
 		}
