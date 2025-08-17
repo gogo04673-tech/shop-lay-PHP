@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 header('Access-Control-Allow-Origin: *');
 header("Content-Type: application/json; charset=UTF-8");
 
-include "../functions.php";
+include "../connect.php";
 
 $input = file_get_contents('php://input');
 $data = json_decode($input, true) ?: $_POST;
@@ -22,8 +22,22 @@ if ($couponName === '') {
     exit;
 }
 
-// حط القيم بين '' لحمايتها
-$where = "coupon_name = '$couponName' AND coupon_expire_date > '$now' AND coupon_count > 0";
+// استعلام باستخدام Prepared Statement
+$stmt = $connect->prepare('SELECT * FROM `coupon` WHERE `coupon_name` = ? AND `coupon_expire_date` > ? AND `coupon_count` > 0');
+$stmt->execute([$couponName, $now]);
+$coupon = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// استدعاء الدالة
-getData("coupon", $where);
+if (!$coupon) {
+    echo json_encode([
+        "status" => "failed",
+        "message" => "Coupon not found or expired or count is 0"
+    ]);
+    exit();
+}
+
+// لو وصل هنا معناها الكوبون صالح
+echo json_encode([
+    "status" => "success",
+    "message" => "Coupon is valid",
+    "data"    => $coupon
+]);
