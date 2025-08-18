@@ -22,7 +22,7 @@ $ordersCoupon = isset($data['ordersCoupon']) ? intval($data['ordersCoupon']) : 0
 
 
 
-if (empty($userId) || empty($ordersPaymentMethod)) {
+if (empty($userId)) {
     echo json_encode([
         "status" => "failure",
         "message" => "userId and itemId are required"
