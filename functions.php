@@ -284,7 +284,7 @@ function insertData($table, $data, $json = true)
 	include __DIR__ . "/connect.php";
 
 	// تحقق من اسم الجدول
-	$allowedTables = ['categories', 'users', 'items', 'items_view', 'favorite_items', 'cart', 'address'];
+	$allowedTables = ['categories', 'users', 'items', 'items_view', 'favorite_items', 'cart', 'address', 'orders'];
 	if (!in_array($table, $allowedTables)) {
 		throw new Exception("Invalid table name");
 	}

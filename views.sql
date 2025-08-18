@@ -28,4 +28,6 @@ SELECT
 FROM cart
 JOIN items 
     ON cart.cart_items_id = items.items_id
+WHERE cart.cart_orders = 0
 GROUP BY cart.cart_items_id, cart.cart_users_id;
+

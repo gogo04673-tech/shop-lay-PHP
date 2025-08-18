@@ -33,7 +33,7 @@ if ($itemExists == 0) {
 }
 
 // تحقق أن المنتج غير مكرر في السلة
-$count = getData("cart", "cart_items_id = $itemId AND cart_users_id = $userId", false);
+$count = getData("cart", "cart_items_id = $itemId AND cart_users_id = $userId AND cart_orders = 0", false);
 
 
 // إضافة المنتج للسلة

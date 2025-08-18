@@ -26,7 +26,7 @@ $sql = "
 DELETE c
 FROM cart c
 JOIN (
-    SELECT cart_id FROM cart WHERE cart_users_id = ? AND cart_items_id = ? LIMIT 1
+    SELECT cart_id FROM cart WHERE cart_users_id = ? AND cart_orders = 0 AND cart_items_id = ? LIMIT 1
 ) AS sub ON c.cart_id = sub.cart_id
 ";
 $stmt = $connect->prepare($sql);

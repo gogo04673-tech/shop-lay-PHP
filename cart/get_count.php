@@ -25,7 +25,7 @@ if (empty($userId) || empty($itemId)) {
 $sql = "
 SELECT COUNT(cart.cart_id) as count_item 
 FROM cart  
-WHERE cart_items_id = ? AND cart_users_id = ?
+WHERE cart_items_id = ? AND cart_users_id = ? AND cart_orders = 0
 ";
 $stmt = $connect->prepare($sql);
 $stmt->execute([$itemId, $userId]);
