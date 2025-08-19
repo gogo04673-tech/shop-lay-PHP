@@ -16,10 +16,13 @@ $userId = isset($data['userId']) ? intval($data['userId']) : 0;
 $ordersPaymentMethod = isset($data['ordersPaymentMethod']) ? intval($data['ordersPaymentMethod']) : 0;
 $ordersAddress = isset($data['ordersAddress']) ? intval($data['ordersAddress']) : 0;
 $ordersType = isset($data['ordersType']) ? intval($data['ordersType']) : 0;
-$ordersPriceDelivery = isset($data['ordersPriceDelivery']) ? intval($data['ordersPriceDelivery']) : 0;
-$ordersPrice = isset($data['ordersPrice']) ? intval($data['ordersPrice']) : 0;
+$ordersPriceDelivery = isset($data['ordersPriceDelivery']) ? floatval($data['ordersPriceDelivery']) : 0;
+$ordersPrice = isset($data['ordersPrice']) ? floatval($data['ordersPrice']) : 0;
 $ordersCoupon = isset($data['ordersCoupon']) ? intval($data['ordersCoupon']) : 0;
+$ordersCouponDiscount = isset($data['ordersCouponDiscount']) ? intval($data['ordersCouponDiscount']) : 0;
+$now = date("Y-m-d H:i:s");
 
+$totalPrice = $ordersPrice + $ordersPriceDelivery;
 
 
 if (empty($userId)) {
@@ -30,6 +33,19 @@ if (empty($userId)) {
     exit;
 }
 
+
+
+// استعلام باستخدام Prepared Statement
+$stm = $connect->prepare('SELECT * FROM `coupon` WHERE `coupon_id` = ? AND `coupon_expire_date` > ? AND `coupon_count` > 0');
+$stm->execute([$ordersCoupon, $now]);
+$coupon = $stm->rowCount();
+
+if ($coupon > 0) {
+    $totalPrice = $totalPrice - $ordersPrice * $ordersCouponDiscount / 100;
+}
+
+
+
 $data = array(
     "orders_users_id" => $userId,
     "orders_payment_method" => $ordersPaymentMethod,
@@ -37,7 +53,9 @@ $data = array(
     "orders_type" => $ordersType,
     "orders_price_delivery" => $ordersPriceDelivery,
     "orders_price" => $ordersPrice,
+    "orders_total_price" => $totalPrice,
     "orders_coupon" => $ordersCoupon,
+    "orders_coupon_discount" => $ordersCouponDiscount
 );
 
 
