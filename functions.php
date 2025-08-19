@@ -5,6 +5,13 @@ require 'phpmailer/PHPMailer.php';
 require 'phpmailer/SMTP.php';
 require 'phpmailer/Exception.php';
 
+
+require __DIR__ . '/vendor/autoload.php';
+
+use Google\Client;
+
+
+
 // استيراد الـ namespace
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -318,5 +325,65 @@ function insertData($table, $data, $json = true)
 		} else {
 			throw $e;
 		}
+	}
+}
+
+
+// * Notification
+function sendGCM($title, $message, $topic, $pageid, $pagename)
+{
+	$projectId = "shop-lay"; // ضع هنا project_id من ملف JSON
+	$url = "https://fcm.googleapis.com/v1/projects/$projectId/messages:send";
+
+	$accessToken = getAccessTokenFromServiceAccount();
+
+	$fields = [
+		"message" => [
+			"topic" => $topic,
+			"notification" => [
+				"title" => $title,
+				"body"  => $message,
+			],
+			"data" => [
+				"pageid" => $pageid,
+				"pagename" => $pagename,
+			]
+		]
+	];
+
+	$headers = [
+		"Authorization: Bearer $accessToken",
+		"Content-Type: application/json; UTF-8"
+	];
+
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_POST, true);
+	curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+
+	$result = curl_exec($ch);
+	curl_close($ch);
+
+	return $result;
+}
+
+
+// getAccessTokenFromServiceAccount
+function getAccessTokenFromServiceAccount()
+{
+	$serviceAccountPath = __DIR__ . '/service-account.json'; // مسار ملف JSON
+
+	$client = new Client();
+	$client->setAuthConfig($serviceAccountPath);
+	$client->addScope('https://www.googleapis.com/auth/firebase.messaging');
+
+	$token = $client->fetchAccessTokenWithAssertion();
+
+	if (isset($token['access_token'])) {
+		return $token['access_token'];
+	} else {
+		throw new Exception("فشل في جلب Access Token: " . json_encode($token));
 	}
 }
