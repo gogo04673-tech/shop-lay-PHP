@@ -42,6 +42,8 @@ $coupon = $stm->rowCount();
 
 if ($coupon > 0) {
     $totalPrice = $totalPrice - $ordersPrice * $ordersCouponDiscount / 100;
+    $st = $connect->prepare('UPDATE `coupon` SET `coupon_count`= `coupon_count` - 1 WHERE `coupon_id`= ?');
+    $st->execute([$ordersCoupon]);
 }
 
 
