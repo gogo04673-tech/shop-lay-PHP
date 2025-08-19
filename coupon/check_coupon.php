@@ -27,7 +27,7 @@ $stmt = $connect->prepare('SELECT * FROM `coupon` WHERE `coupon_name` = ? AND `c
 $stmt->execute([$couponName, $now]);
 $coupon = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($stmt->rowCount() == 0) {
+if (!$coupon) {
     echo json_encode([
         "status" => "failed",
         "message" => "Coupon not found or expired or count is 0"
