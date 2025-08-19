@@ -22,6 +22,10 @@ $ordersCoupon = isset($data['ordersCoupon']) ? intval($data['ordersCoupon']) : 0
 $ordersCouponDiscount = isset($data['ordersCouponDiscount']) ? intval($data['ordersCouponDiscount']) : 0;
 $now = date("Y-m-d H:i:s");
 
+if ($ordersType == "1") {
+    $ordersPriceDelivery = 0;
+}
+
 $totalPrice = $ordersPrice + $ordersPriceDelivery;
 
 
@@ -32,6 +36,7 @@ if (empty($userId)) {
     ]);
     exit;
 }
+
 
 
 
