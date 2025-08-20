@@ -373,9 +373,10 @@ function sendGCM($title, $message, $topic, $pageid, $pagename)
 // getAccessTokenFromServiceAccount
 function getAccessTokenFromServiceAccount()
 {
-	$serviceAccountPath = __DIR__ . '/service-account.json'; // مسار ملف JSON
+	// مسار ملف JSON الصحيح
+	$serviceAccountPath = __DIR__ . '/shop-lay-firebase-adminsdk-fbsvc-937a71fcff.json';
 
-	$client = new Client();
+	$client = new Google\Client();
 	$client->setAuthConfig($serviceAccountPath);
 	$client->addScope('https://www.googleapis.com/auth/firebase.messaging');
 
