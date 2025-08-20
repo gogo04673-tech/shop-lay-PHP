@@ -373,13 +373,25 @@ function sendGCM($title, $message, $topic, $pageid, $pagename)
 // getAccessTokenFromServiceAccount
 function getAccessTokenFromServiceAccount()
 {
-	// مسار ملف JSON الصحيح
-	$serviceAccountPath = __DIR__ . '/shop-lay-firebase-adminsdk-fbsvc-937a71fcff.json';
+	// قراءة محتوى JSON من متغير البيئة
+	$json = getenv('FIREBASE_JSON');
 
+	if (!$json) {
+		throw new Exception("لم يتم تعريف متغير البيئة FIREBASE_JSON");
+	}
+
+	// إنشاء ملف JSON مؤقت على السيرفر
+	$tmpPath = sys_get_temp_dir() . '/service-account.json';
+	if (file_put_contents($tmpPath, $json) === false) {
+		throw new Exception("فشل في إنشاء ملف JSON المؤقت: $tmpPath");
+	}
+
+	// تهيئة عميل Google API
 	$client = new Google\Client();
-	$client->setAuthConfig($serviceAccountPath);
+	$client->setAuthConfig($tmpPath);
 	$client->addScope('https://www.googleapis.com/auth/firebase.messaging');
 
+	// جلب Access Token
 	$token = $client->fetchAccessTokenWithAssertion();
 
 	if (isset($token['access_token'])) {
