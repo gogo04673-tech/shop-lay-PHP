@@ -26,8 +26,6 @@ if ($orderId > 0 && $userId > 0) {
 
     // إرسال إشعار
     sendGCM("Success", "Your order is preparing.", "users$userId", "none", "none");
-
-    echo json_encode(["status" => "success"]);
 } else {
     echo json_encode(["status" => "error", "message" => "Missing userId or orderId"]);
 }
