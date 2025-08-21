@@ -199,7 +199,7 @@ function getAllData($table, $where = null, $json = true)
 	//global $connect;
 
 	try {
-		$allowedTables = ['categories', 'users', 'items', 'items_view', 'favorite_items', 'cart', 'items_cart', 'address', 'orders'];
+		$allowedTables = ['categories', 'users', 'items', 'items_view', 'favorite_items', 'cart', 'items_cart', 'address', 'orders', 'notifications'];
 		if (!in_array($table, $allowedTables)) {
 			throw new Exception("Invalid table name");
 		}
