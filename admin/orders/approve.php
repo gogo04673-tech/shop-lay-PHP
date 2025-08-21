@@ -24,8 +24,8 @@ if ($orderId > 0 && $userId > 0) {
 
     updateData('orders', $updateData, ["orders_id" => $orderId, "orders_status" => 0]);
 
-    // إرسال إشعار
-    sendGCM("Success", "Your order is preparing.", "users$userId", "none", "none");
+
+    sendGCM("Success", "Your order is preparing.", "users$userId", "none", "refreshPageOrders");
 } else {
     echo json_encode(["status" => "error", "message" => "Missing userId or orderId"]);
 }
