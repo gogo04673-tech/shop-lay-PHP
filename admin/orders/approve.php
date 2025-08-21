@@ -20,4 +20,4 @@ updateData('orders', $data, ["orders_id" => $orderId, "orders_status" => 0]);
 
 
 
-echo sendGCM("Success", "Your order is preparing.", "users$userId", "none", "none");
+sendGCM("Success", "Your order is preparing.", "users$userId", "none", "none");
