@@ -46,11 +46,31 @@ SELECT
     MAX(items.items_price) AS items_price,
     MAX(items.items_image) AS items_image,
     MAX(items.items_desc) AS items_desc,
-    MAX(items.items_desc_ar) AS items_desc_ar
+    MAX(items.items_desc_ar) AS items_desc_ar,
+    MAX(orders_view.orders_id) AS orders_id ,
+    MAX(orders_view.orders_users_id) AS orders_users_id ,
+    MAX(orders_view.orders_payment_method) AS orders_payment_method ,
+    MAX(orders_view.orders_address) AS orders_address ,
+    MAX(orders_view.orders_type) AS orders_type,
+    MAX(orders_view.orders_price_delivery) AS orders_price_delivery,
+    MAX(orders_view.orders_price) AS orders_price ,
+    MAX(orders_view.orders_total_price) AS orders_total_price ,
+    MAX(orders_view.orders_coupon) AS orders_coupon ,
+    MAX(orders_view.orders_coupon_discount) AS orders_coupon_discount ,
+    MAX(orders_view.orders_date_time) AS orders_date_time,
+    MAX(orders_view.orders_status) AS orders_status,
+    MAX(orders_view.address_id) AS address_id ,
+    MAX(orders_view.address_users_id) AS address_users_id ,
+    MAX(orders_view.address_city) AS address_city ,
+    MAX(orders_view.address_street) AS address_street ,
+    MAX(orders_view.address_lat) AS address_lat,
+    MAX(orders_view.address_lang) AS address_long
 FROM cart
 JOIN items 
     ON cart.cart_items_id = items.items_id
-WHERE cart.cart_orders = 0
+JOIN orders_view 
+    ON orders_view.orders_id = cart.cart_orders
+WHERE cart.cart_orders != 0
 GROUP BY cart.cart_items_id, cart.cart_users_id;
 
 
