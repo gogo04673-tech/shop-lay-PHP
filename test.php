@@ -8,4 +8,4 @@ header("Content-Type: application/json; charset=UTF-8");
 
 include "./functions.php";
 
-echo sendGCM("🔔 إشعار تجريبي", "أهلا محمد، هذا إشعار من FCM v1 API", "news", "123", "homepage");
+echo sendGCM("🔔 إشعار تجريبي", "أهلا محمد، هذا إشعار من FCM v1 API", "users", "123", "homepage");
