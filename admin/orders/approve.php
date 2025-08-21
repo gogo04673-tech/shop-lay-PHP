@@ -25,7 +25,8 @@ if ($orderId > 0 && $userId > 0) {
     updateData('orders', $updateData, ["orders_id" => $orderId, "orders_status" => 0]);
 
 
-    sendGCM("Success", "Your order is preparing.", "users$userId", "none", "refreshPageOrders");
+    // sendGCM("Success", "Your order is preparing.", "users$userId", "none", "refreshPageOrders");
+    insertNotify("Success", "Your order is preparing.", $userId, "users$userId", "none", "refreshPageOrders");
 } else {
     echo json_encode(["status" => "error", "message" => "Missing userId or orderId"]);
 }

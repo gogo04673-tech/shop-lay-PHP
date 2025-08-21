@@ -457,3 +457,16 @@ function getAccessTokenFromServiceAccount()
 		throw new Exception("فشل في جلب Access Token: " . json_encode($token));
 	}
 }
+
+// notifications
+function insertNotify($title, $body, $userId,  $topic, $pageId, $pageName)
+{
+	include __DIR__ . "/connect.php";
+
+	$stmt = $connect->prepare('INSERT INTO `notifications`(`notifications_users_id`, `notifications_title`, `notifications_body`) VALUES (?, ?, ?)');
+	$stmt->execute([$userId, $title, $body]);
+
+	sendGCM($title, $body, $topic, $pageId, $pageName);
+
+	return $stmt->rowCount();
+}
