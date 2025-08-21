@@ -31,3 +31,33 @@ JOIN items
 WHERE cart.cart_orders = 0
 GROUP BY cart.cart_items_id, cart.cart_users_id;
 
+// orders_details_view 
+CREATE OR REPLACE VIEW orders_details_view AS
+SELECT 
+    SUM(items.items_price - (items.items_price * items.items_discount / 100)) AS total,
+    COUNT(cart.cart_items_id) AS count_item,
+    MAX(cart.cart_id) AS cart_id,
+    MAX(cart.cart_orders) AS cart_orders,
+    cart.cart_users_id,
+    cart.cart_items_id,
+    MAX(items.items_id) AS items_id,
+    MAX(items.items_name) AS items_name,
+    MAX(items.items_name_ar) AS items_name_ar,
+    MAX(items.items_price) AS items_price,
+    MAX(items.items_image) AS items_image,
+    MAX(items.items_desc) AS items_desc,
+    MAX(items.items_desc_ar) AS items_desc_ar
+FROM cart
+JOIN items 
+    ON cart.cart_items_id = items.items_id
+WHERE cart.cart_orders = 0
+GROUP BY cart.cart_items_id, cart.cart_users_id;
+
+
+// Orders view
+CREATE OR REPLACE VIEW orders_view AS
+SELECT orders.*, address.* FROM orders
+LEFT JOIN address ON address.address_id = orders.orders_address;
+
+
+
