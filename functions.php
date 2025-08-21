@@ -328,6 +328,63 @@ function insertData($table, $data, $json = true)
 	}
 }
 
+// * update data 
+function updateData($table, $data, $where, $json = true)
+{
+	include __DIR__ . "/connect.php";
+
+	// تحقق من اسم الجدول
+	$allowedTables = ['categories', 'users', 'items', 'items_view', 'favorite_items', 'cart', 'address', 'orders'];
+	if (!in_array($table, $allowedTables)) {
+		throw new Exception("Invalid table name");
+	}
+
+	// بناء الاستعلام
+	$setParts = [];
+	foreach ($data as $field => $value) {
+		$setParts[] = "`$field` = :$field";
+	}
+	$setQuery = implode(', ', $setParts);
+
+	$whereParts = [];
+	foreach ($where as $field => $value) {
+		$whereParts[] = "`$field` = :where_$field";
+	}
+	$whereQuery = implode(' AND ', $whereParts);
+
+	$sql = "UPDATE `$table` SET $setQuery WHERE $whereQuery";
+
+	try {
+		$stmt = $connect->prepare($sql);
+
+		// ربط قيم التحديث
+		foreach ($data as $f => $v) {
+			$stmt->bindValue(':' . $f, $v);
+		}
+
+		// ربط قيم الشرط
+		foreach ($where as $f => $v) {
+			$stmt->bindValue(':where_' . $f, $v);
+		}
+
+		$stmt->execute();
+		$count = $stmt->rowCount();
+
+		if ($json) {
+			echo json_encode(["status" => $count > 0 ? "success" : "failure"]);
+		} else {
+			return $count;
+		}
+	} catch (PDOException $e) {
+		if ($json) {
+			echo json_encode(["status" => "error", "message" => $e->getMessage()]);
+		} else {
+			throw $e;
+		}
+	}
+}
+
+
 
 // * Notification
 function sendGCM($title, $message, $topic, $pageid, $pagename)
