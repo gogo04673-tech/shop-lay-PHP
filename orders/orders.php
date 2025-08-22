@@ -24,4 +24,4 @@ if (empty($userId)) {
 }
 
 
-getAllData('orders_details_view', "orders_users_id = $userId");
+getAllData('orders', "orders_users_id = $userId");
