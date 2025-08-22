@@ -21,7 +21,7 @@ if ($orderId <= 0) {
     exit();
 }
 
-$stmt = $connect->prepare("DELETE FROM `orders` WHERE orders_id = ?");
+$stmt = $connect->prepare("DELETE FROM `orders` WHERE orders_id = ? AND orders_status = 0");
 $stmt->execute([$orderId]);
 
 if ($stmt->rowCount() > 0) {
