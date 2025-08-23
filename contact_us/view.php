@@ -13,14 +13,14 @@ include "../functions.php";
 $input = file_get_contents('php://input');
 $data = json_decode($input, true) ?: $_POST;
 
-$userId = isset($dataInput['userId']) ? intval($dataInput['userId']) : 0;
+$userId = isset($data['userId']) ? intval($data['userId']) : 0;
 
 
 
-// if ($userId == 0) {
-//     echo json_encode(["status" => "failed", "message" => "user id is required"]);
-//     exit();
-// }
+if ($userId == 0) {
+    echo json_encode(["status" => "failed", "message" => "user id is required"]);
+    exit();
+}
 
 
 

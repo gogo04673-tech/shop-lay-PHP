@@ -13,15 +13,15 @@ include "../functions.php";
 $input = file_get_contents('php://input');
 $data = json_decode($input, true) ?: $_POST;
 
-$userId = isset($dataInput['userId']) ? intval($dataInput['userId']) : 0;
+$userId = isset($data['userId']) ? intval($data['userId']) : 0;
 $title = isset($data['title']) ? $data['title'] : '';
 $body = isset($data['body']) ? $data['body'] : '';
 
 
-// if ($userId == 0 || empty($title) || empty($body)) {
-//     echo json_encode(["status" => "failed", "message" => "All fields are required"]);
-//     exit();
-// }
+if ($userId == 0 || empty($title) || empty($body)) {
+    echo json_encode(["status" => "failed", "message" => "All fields are required"]);
+    exit();
+}
 
 $data = array(
     "contact_us_users_id" => $userId,
