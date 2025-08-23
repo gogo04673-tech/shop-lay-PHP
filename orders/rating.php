@@ -20,7 +20,6 @@ $ordersRatingCommit = isset($dataInput['ordersRatingCommit']) ? $dataInput['orde
 $data = array(
     "orders_rating" => $ordersRating,
     "orders_rating_commit" => $ordersRatingCommit
-
 );
 
-updateData("orders", $data, "orders_id = $orderId");
+updateData("orders", $data, ["orders_id" => $orderId]);
