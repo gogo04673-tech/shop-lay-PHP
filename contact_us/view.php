@@ -17,10 +17,10 @@ $userId = isset($dataInput['userId']) ? intval($dataInput['userId']) : 0;
 
 
 
-if ($userId == 0) {
-    echo json_encode(["status" => "failed", "message" => "user id is required"]);
-    exit();
-}
+// if ($userId == 0) {
+//     echo json_encode(["status" => "failed", "message" => "user id is required"]);
+//     exit();
+// }
 
 
 
