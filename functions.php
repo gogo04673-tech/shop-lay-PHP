@@ -199,7 +199,7 @@ function getAllData($table, $where = null, $json = true)
 	//global $connect;
 
 	try {
-		$allowedTables = ['categories', 'users', 'items', 'items_view', 'favorite_items', 'cart', 'items_cart', 'address', 'orders', 'notifications', 'orders_details_view'];
+		$allowedTables = ['categories', 'users', 'items', 'items_view', 'favorite_items', 'cart', 'items_cart', 'address', 'orders', 'notifications', 'orders_details_view', 'contact_us'];
 		if (!in_array($table, $allowedTables)) {
 			throw new Exception("Invalid table name");
 		}
@@ -291,7 +291,7 @@ function insertData($table, $data, $json = true)
 	include __DIR__ . "/connect.php";
 
 	// تحقق من اسم الجدول
-	$allowedTables = ['categories', 'users', 'items', 'items_view', 'favorite_items', 'cart', 'address', 'orders'];
+	$allowedTables = ['categories', 'users', 'items', 'items_view', 'favorite_items', 'cart', 'address', 'orders', 'contact_us'];
 	if (!in_array($table, $allowedTables)) {
 		throw new Exception("Invalid table name");
 	}

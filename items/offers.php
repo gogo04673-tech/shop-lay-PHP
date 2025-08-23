@@ -24,13 +24,13 @@ $sql = "
     (items_price - (items_price * items_discount / 100)) as items_price_discount 
     FROM items_view
     WHERE items_discount != 0
-      AND items_id NOT IN ( 
+        AND items_id NOT IN ( 
             SELECT items_view.items_id 
             FROM items_view 
             INNER JOIN favorite 
                 ON favorite.favorite_item_id = items_view.items_id 
                 
-      )
+        )
 ";
 
 $stmt = $connect->prepare($sql);
