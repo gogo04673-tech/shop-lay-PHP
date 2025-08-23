@@ -79,5 +79,29 @@ CREATE OR REPLACE VIEW orders_view AS
 SELECT orders.*, address.* FROM orders
 LEFT JOIN address ON address.address_id = orders.orders_address;
 
+// top Seller
 
+CREATE OR REPLACE VIEW items_top_seller as
+SELECT 
+COUNT(cart.cart_id) as countItems,
+(items.items_price - (items.items_price * items.items_discount / 100)) as items_price_discount, 
+ANY_VALUE(cart.cart_id) as cart_id,
+ANY_VALUE(cart.cart_items_id) as cart_items_id,
+ANY_VALUE(cart.cart_orders) as cart_orders,
+ANY_VALUE(items.items_id) as items_id,
+ANY_VALUE(items.items_name) as items_name,
+ANY_VALUE(items.items_name_ar) as items_name_ar,
+ANY_VALUE(items.items_desc) as items_desc,
+ANY_VALUE(items.items_desc_ar) as items_desc_ar,
+ANY_VALUE(items.items_discount) as items_discount,
+ANY_VALUE(items.items_image) as items_image,
+ANY_VALUE(items.items_count) as items_count,
+ANY_VALUE(items.items_price) as items_price,
+ANY_VALUE(items.items_categories) as items_categories,
+ANY_VALUE(items.items_date) as items_date,
+ANY_VALUE(items.items_active) as items_active
+FROM cart
+INNER JOIN items on cart.cart_items_id = items.items_id
+WHERE cart.cart_orders != 0
+GROUP BY cart.cart_items_id;
 
