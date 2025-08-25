@@ -62,7 +62,8 @@ $data = array(
     "orders_price" => $ordersPrice,
     "orders_total_price" => $totalPrice,
     "orders_coupon" => $ordersCoupon,
-    "orders_coupon_discount" => $ordersCouponDiscount
+    "orders_coupon_discount" => $ordersCouponDiscount,
+    "orders_rating_commit" => ''
 );
 
 
