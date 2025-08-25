@@ -21,7 +21,8 @@ if ($orderId > 0 && $userId > 0) {
 
     // تحديث حالة الطلب
     $updateData = [
-        "orders_status" => 3
+        "orders_status" => 3,
+        "orders_delivery" => $deliveryId
     ];
 
 
