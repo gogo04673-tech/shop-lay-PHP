@@ -82,9 +82,6 @@ try {
         }
     }
 } catch (PDOException $e) {
-    if ($json) {
-        echo json_encode(["status" => "error", "message" => $e->getMessage()]);
-    } else {
-        throw $e;
-    }
+
+    echo json_encode(["status" => "error", "message" => $e->getMessage()]);
 }
