@@ -29,11 +29,11 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
 try {
     // البحث عن المستخدم بالبريد فقط
-    $stmt = $connect->prepare('SELECT * FROM `admin` WHERE `admin_email` = ?');
-    $stmt->execute([$email]);
+    $stmt = $connect->prepare('SELECT * FROM `admin` WHERE `admin_email` = ? AND `admin_password` = ?');
+    $stmt->execute([$email, $password]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($user && password_verify($password, $user['admin_password'])) {
+    if ($user) {
         // تسجيل الدخول ناجح
         echo json_encode([
             "status" => "success",
