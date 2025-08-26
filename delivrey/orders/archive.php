@@ -15,4 +15,4 @@ $data = json_decode($input, true) ?: $_POST;
 
 $deliveryId  = isset($data['deliveryId']) ? intval($data['deliveryId']) : 0;
 
-getAllData("orders_view", "orders_status = 4 AND orders_delivery = $deliveryId)");
+getAllData("orders_view", "orders_status = 4 AND orders_delivery = $deliveryId");
