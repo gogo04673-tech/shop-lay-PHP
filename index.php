@@ -17,3 +17,5 @@ switch($page) {
     require 'home.php';
     break;
 }
+
+?>
